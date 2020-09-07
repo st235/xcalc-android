@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "st235.com.github.calculator"
+        minSdkVersion config.minSdk
+        targetSdkVersion config.targetSdk
+        versionCode config.versionCode
+        versionName config.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":uicore")
+    implementation project(":calculator-core")
+
+    implementation libs.kotlin
+    implementation libs.appCompat
+    implementation libs.coreKtx
+    implementation libs.constraint
+    implementation libs.recycler
+    implementation libs.liveData
+    implementation libs.viewModel
+    implementation libs.gson
+
+    kapt proccessors.lifeCycle
+
+    implementation libs.dagger
+    kapt proccessors.dagger
+
+    implementation libs.rxJava
+    implementation libs.rxAndroid
+
+    implementation libs.timber
+}

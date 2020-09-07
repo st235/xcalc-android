@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KeyboardLayout">
+        <attr name="kl_columns" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="KeyboardLayout_Layout">
+        <attr name="kl_spanColumns" format="integer" />
+        <attr name="kl_heightWeight" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundButton">
+        <attr name="rb_backgroundColor" format="color" />
+        <attr name="rb_backgroundRoundRadius" format="dimension" />
+        <attr name="rb_rippleColor" format="color" />
+        <attr name="rb_elevation" format="dimension" />
+        <attr name="rb_textAllCaps" format="boolean" />
+        <attr name="rb_paddingVertical" format="dimension" />
+        <attr name="rb_paddingHorizontal" format="dimension" />
+    </declare-styleable>
+</resources>

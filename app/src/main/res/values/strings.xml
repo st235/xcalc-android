@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">XCalc</string>
+
+    <string name="calculator_angle_deg">DEG</string>
+    <string name="calculator_angle_rads">RADS</string>
+
+</resources>

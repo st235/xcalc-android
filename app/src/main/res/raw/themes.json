@@ -1,0 +1,42 @@
+{
+  "themes":[
+    {
+      "default": true,
+      "window": {
+        "foreground": "#000000",
+        "background": "#fafafa",
+        "ripple": "#c7c7c7"
+      },
+      "operators": {
+        "foreground": "#9c27b0",
+        "background": "#44ede7f6",
+        "ripple": "#82b1ff"
+      },
+      "primary": {
+        "foreground": "#424242",
+        "background": "#fafafa",
+        "ripple": "#424242"
+      },
+      "error": {
+        "foreground": "#f4511e",
+        "background": "#ffebee",
+        "ripple": "#f50057"
+      },
+      "result": {
+        "foreground": "#66bb6a",
+        "background": "#e8f5e9",
+        "ripple": "#64dd17"
+      },
+      "hints": {
+        "foreground": "#bdbdbd",
+        "background": "#bdbdbd",
+        "ripple": "#bdbdbd"
+      },
+      "info": {
+        "foreground": "#424242",
+        "background": "#ffecb3",
+        "ripple": "#ffd600"
+      }
+    }
+  ]
+}
