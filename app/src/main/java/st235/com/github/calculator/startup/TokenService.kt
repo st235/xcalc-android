@@ -38,12 +38,20 @@ class TokenService @Inject constructor(
         return requireTokenProcessor().findTokenById(id)
     }
 
-    fun append(tokens: Collection<String>) {
-        return requireTokenProcessor().appendAll(tokens)
+    fun insert(index: Int, ids: Collection<String>) {
+        requireTokenProcessor().insertAll(index, ids)
     }
 
-    fun remove() {
-        requireTokenProcessor().remove()
+    fun replace(start: Int, finish: Int, ids: Collection<String>) {
+        requireTokenProcessor().replaceAll(start, finish, ids)
+    }
+
+    fun remove(index: Int) {
+        requireTokenProcessor().remove(index)
+    }
+
+    fun removeInterval(start: Int, finish: Int) {
+        requireTokenProcessor().removeInterval(start, finish)
     }
 
     fun clear() {

@@ -19,8 +19,12 @@ class CalculatorActivity : BaseMvvmActivity<CalculatorViewModel>() {
 
     private val onSpecialButtonClicked = { id: String, isLongClick: Boolean ->
         when {
-            id == KeyboardManager.ID_CLEAR && !isLongClick -> viewModel.onRemoveLastToken()
-            id == KeyboardManager.ID_CLEAR && isLongClick -> viewModel.onClear()
+            id == KeyboardManager.ID_CLEAR && !isLongClick -> {
+                viewModel.onRemoveLastToken()
+            }
+            id == KeyboardManager.ID_CLEAR && isLongClick -> {
+                viewModel.onClear()
+            }
         }
     }
 
@@ -52,6 +56,10 @@ class CalculatorActivity : BaseMvvmActivity<CalculatorViewModel>() {
 
         angleUnitsSelector.setOnClickListener {
             viewModel.onChangeAngle()
+        }
+
+        inputField.onCarriageListener = { start, finish ->
+            viewModel.onSelectionChanged(start, finish)
         }
 
         viewModel.observeAngleUnitsLiveData()

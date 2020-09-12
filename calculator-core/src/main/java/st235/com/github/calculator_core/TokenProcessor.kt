@@ -29,23 +29,60 @@ class TokenProcessor(
     }
 
     fun findTokenById(id: String): Token {
-        return requireToken(id)
+        return tokens[id] ?: throw IllegalArgumentException("Cannot find token with id: $id")
     }
 
-    fun append(token: String) {
-        tokensList.add(requireToken(token))
+    fun insertAll(position: Int, ids: Collection<String>) {
+        tokensList.addAll(position, ids.map { findTokenById(it) })
     }
 
-    fun appendAll(tokens: Collection<String>) {
-        tokensList.addAll(tokens.map { findTokenById(it) })
+    fun replaceAll(startIndex: Int, finishIndex: Int, ids: Collection<String>) {
+        val newTokens = mutableListOf<Token>()
+
+        var index = 0
+
+        while (index < tokensList.size && index < startIndex) {
+            newTokens.add(tokensList[index])
+            index++
+        }
+
+        newTokens.addAll(ids.map { findTokenById(it) })
+
+        index = finishIndex
+        while (index < tokensList.size) {
+            newTokens.add(tokensList[index])
+            index++
+        }
+
+        tokensList.clear()
+        tokensList.addAll(newTokens)
     }
 
-    fun remove() {
-        if (tokensList.isEmpty()) {
+    fun remove(index: Int) {
+        if (tokensList.isEmpty()
+            || index >= tokensList.size) {
             return
         }
 
-        tokensList.removeLast()
+        tokensList.removeAt(index)
+    }
+
+    fun removeInterval(start: Int, finish: Int) {
+        if (tokensList.isEmpty()
+            || start > finish) {
+            return
+        }
+
+        val newTokens = mutableListOf<Token>()
+
+        for (i in tokensList.indices) {
+            if (i !in start until finish) {
+                newTokens.add(tokensList[i])
+            }
+        }
+
+        tokensList.clear()
+        tokensList.addAll(newTokens)
     }
 
     fun clear() {
@@ -84,7 +121,4 @@ class TokenProcessor(
         return builder.toString()
     }
 
-    private fun requireToken(id: String): Token {
-        return tokens[id] ?: throw IllegalArgumentException("Cannot find token with id: $id")
-    }
 }

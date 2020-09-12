@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="18sp"
+        app:autoSizeMinTextSize="16sp"
         app:autoSizeMaxTextSize="28sp"
         android:layout_gravity="center" />
 

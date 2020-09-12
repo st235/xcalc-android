@@ -1,9 +1,11 @@
 package st235.com.github.calculator.presentation.calculator
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.disposables.Disposable
 import st235.com.github.calculator.presentation.base.BaseViewModel
+import st235.com.github.calculator.presentation.calculator.input.CarriageController
 import st235.com.github.calculator.presentation.calculator.keyboard.KeyboardButton
 import st235.com.github.calculator.utils.applyComputation
 import st235.com.github.calculator_core.Angles
@@ -11,7 +13,7 @@ import java.util.*
 import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor(
-    private val calculatorInteractor: CalculatorInteractor
+    private val interactor: CalculatorInteractor
 ): BaseViewModel() {
 
     private val buttonsLiveData = MutableLiveData<List<KeyboardButton>>()
@@ -22,21 +24,22 @@ class CalculatorViewModel @Inject constructor(
     private var keyboardDisposable: Disposable? = null
 
     override fun onCreate() {
-        angleUnitsLiveData.value = calculatorInteractor.getAngle()
+        angleUnitsLiveData.value = interactor.getAngle()
 
-        keyboardDisposable = calculatorInteractor.observeKeyboard()
+        keyboardDisposable = interactor.observeKeyboard()
             .applyComputation()
             .subscribe {
                 buttonsLiveData.value = it
             }
 
-        screenDataDisposable = calculatorInteractor.observeScreenData()
+        screenDataDisposable = interactor.observeScreenData()
             .applyComputation()
             .subscribe(
                 {
                     screenDataLiveData.value = it
                 },
                 {
+                    Log.e("Error", "Error", it)
                 }
             )
     }
@@ -48,20 +51,24 @@ class CalculatorViewModel @Inject constructor(
     fun observeAngleUnitsLiveData(): LiveData<Angles> = angleUnitsLiveData
 
     fun onNewTokenReceived(token: String) {
-        calculatorInteractor
+        interactor
             .appendIds(Collections.singleton(token))
     }
 
+    fun onSelectionChanged(startSelection: Int, endSelection: Int) {
+        interactor.onCarriageChange(startSelection, endSelection)
+    }
+
     fun onChangeAngle() {
-        angleUnitsLiveData.value = calculatorInteractor.changeAngle()
+        angleUnitsLiveData.value = interactor.changeAngle()
     }
 
     fun onRemoveLastToken() {
-        calculatorInteractor.removeLast()
+        interactor.removeLast()
     }
 
     fun onClear() {
-        calculatorInteractor.clear()
+        interactor.clear()
     }
 
     fun onEquals() {

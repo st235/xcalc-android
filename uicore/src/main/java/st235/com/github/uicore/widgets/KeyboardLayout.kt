@@ -69,7 +69,7 @@ class KeyboardLayout @JvmOverloads constructor(
             rowHeight = max(rowHeight, layoutParams.heightWeight)
         }
 
-        if (itemsCounter % columns == 0) {
+        if (!rowHeights.containsKey((itemsCounter) / columns)) {
             rowHeights[(itemsCounter - 1) / columns] = rowHeight
             height += rowHeight
             width = max(width, rowWidth)

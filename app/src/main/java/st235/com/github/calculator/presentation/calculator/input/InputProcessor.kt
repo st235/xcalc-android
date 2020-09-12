@@ -10,10 +10,11 @@ import st235.com.github.calculator.presentation.calculator.CalculatorScreenData
 import st235.com.github.calculator_core.ProcessingResult
 import st235.com.github.calculator_core.tokens.Token
 import st235.com.github.calculator_core.utils.TokenHelper
+import st235.com.github.uicore.spans.TokenSpan
 import st235.com.github.uicore.themes.ThemeNode
 import javax.inject.Inject
 
-class ScreenDataFactory @Inject constructor(
+class InputProcessor @Inject constructor(
     private val themesManager: ThemesManager
 ) {
 
@@ -26,7 +27,7 @@ class ScreenDataFactory @Inject constructor(
     private val primariesTheme: ThemeNode
     get() = themesManager.getActiveTheme().primary
 
-    fun create(result: ProcessingResult): CalculatorScreenData {
+    fun process(result: ProcessingResult): CalculatorScreenData {
         return CalculatorScreenData(
             input = processInput(result),
             output = processOutput(result)
@@ -59,7 +60,7 @@ class ScreenDataFactory @Inject constructor(
 
     private fun spannableFrom(themeNode: ThemeNode, token: CharSequence): Spannable {
         val string = SpannableString(token)
-        string.setSpan(ForegroundColorSpan(themeNode.foregroundColor), 0, string.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(TokenSpan(themeNode.foregroundColor), 0, string.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         return string
     }
 

@@ -26,7 +26,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
+    <st235.com.github.uicore.widgets.TokensEditText
         android:id="@+id/inputField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
