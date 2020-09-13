@@ -5,6 +5,7 @@ import st235.com.github.calculator_core.utils.TokenHelper
 import st235.com.github.xcalc_android_wrapper.AngleUnits
 import st235.com.github.xcalc_android_wrapper.CalculationStatus
 import st235.com.github.xcalc_android_wrapper.XCalc
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -91,9 +92,11 @@ class TokenProcessor(
 
     fun replaceWithOutput(rawOutput: String) {
         val newTokens = mutableListOf<Token>()
+        //TODO(st235): temp, hatch the core
+        val representation = BigDecimal(rawOutput).toPlainString()
 
-        for (i in rawOutput.indices) {
-            val c = rawOutput[i]
+        for (i in representation.indices) {
+            val c = representation[i]
 
             val token = when (c) {
                 '-' -> findTokenById(TokenHelper.ID_OP_MINUS)
