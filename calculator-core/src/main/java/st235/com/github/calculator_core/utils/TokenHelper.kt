@@ -40,6 +40,8 @@ object TokenHelper {
     const val ID_FUN_SQRT = "sqrt"
     const val ID_FUN_EXP = "exp"
 
+    const val ID_FUN_SECOND_POWER = "pow_sec"
+
     private val OPERATORS_LIST = setOf(
         ID_OP_PLUS,
         ID_OP_MINUS,

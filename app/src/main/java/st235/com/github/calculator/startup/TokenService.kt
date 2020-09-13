@@ -58,6 +58,10 @@ class TokenService @Inject constructor(
         requireTokenProcessor().clear()
     }
 
+    fun replaceWith(output: String) {
+        requireTokenProcessor().replaceWithOutput(output)
+    }
+
     fun evaluate(): ProcessingResult {
         return requireTokenProcessor().evaluate()
     }

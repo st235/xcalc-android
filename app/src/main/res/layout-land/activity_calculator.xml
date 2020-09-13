@@ -17,7 +17,8 @@
         android:layout_margin="4dp"
         app:rb_backgroundRoundRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/inputField"
+        app:layout_constraintBottom_toBottomOf="@id/inputField" />
 
     <st235.com.github.uicore.widgets.TokensEditText
         android:id="@+id/inputField"
@@ -32,7 +33,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/montserrat_regular"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/angleUnitsSelector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2*2+3" />
@@ -45,6 +46,7 @@
         android:textSize="22sp"
         android:padding="8dp"
         android:singleLine="true"
+        android:visibility="gone"
         android:fontFamily="@font/montserrat_medium"
         android:textColor="#212121"
         android:layout_marginStart="12dp"
@@ -58,7 +60,7 @@
         android:id="@+id/keyboardLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:kl_columns="10"
+        app:kl_columns="8"
         android:layout_marginTop="16dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"

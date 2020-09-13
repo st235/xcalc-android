@@ -71,8 +71,8 @@ class CalculatorViewModel @Inject constructor(
         interactor.clear()
     }
 
-    fun onEquals() {
-
+    fun onResult(output: String) {
+        interactor.onResult(output)
     }
 
     override fun onCleared() {

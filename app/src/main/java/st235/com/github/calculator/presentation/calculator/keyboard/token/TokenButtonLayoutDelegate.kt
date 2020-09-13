@@ -50,7 +50,7 @@ class TokenButtonLayoutDelegate(
     override fun createLayoutParams(keyboardButton: KeyboardButton): KeyboardLayout.LayoutParams {
         val lp = KeyboardLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         lp.spanColumns = keyboardButton.spanColumns
-        lp.heightWeight = 3
+        lp.aspectHeight = 1F
         return lp
     }
 

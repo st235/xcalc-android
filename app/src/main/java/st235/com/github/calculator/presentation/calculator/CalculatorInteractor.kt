@@ -1,14 +1,13 @@
 package st235.com.github.calculator.presentation.calculator
 
-import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import st235.com.github.calculator.data.KeyboardManager
 import st235.com.github.calculator.data.SettingsManager
 import st235.com.github.calculator.presentation.calculator.input.CarriageController
-import st235.com.github.calculator.startup.TokenService
 import st235.com.github.calculator.presentation.calculator.input.InputProcessor
 import st235.com.github.calculator.presentation.calculator.keyboard.KeyboardButton
+import st235.com.github.calculator.startup.TokenService
 import st235.com.github.calculator_core.Angles
 import javax.inject.Inject
 
@@ -35,7 +34,6 @@ class CalculatorInteractor @Inject constructor(
     }
 
     fun onCarriageChange(start: Int, finish: Int) {
-        Log.d("Carriage", "Carriage position changed: $start - $finish")
         carriageController.onCarriagePositionChanged(start, finish)
     }
 
@@ -69,6 +67,11 @@ class CalculatorInteractor @Inject constructor(
 
     fun clear() {
         tokenProcessor.clear()
+        reloadData()
+    }
+
+    fun onResult(output: String) {
+        tokenProcessor.replaceWith(output)
         reloadData()
     }
 

@@ -68,40 +68,43 @@ class KeyboardManager @Inject constructor(
 
     private fun defaultLandscapeKeyboard(): List<KeyboardButton> {
         /**
-         * 10 columns x 3 rows
+         * 8 columns x 4 rows
          */
         return listOf(
             createAction(id = ID_CLEAR, theme = themesManager.getActiveTheme().error, value = "C"),
             createToken(TokenHelper.ID_OPEN_PARENTHESIS),
             createToken(TokenHelper.ID_CLOSE_PARENTHESIS),
-            createToken(TokenHelper.ID_FUN_SIN),
-            createToken(TokenHelper.ID_FUN_COS),
+            createToken(TokenHelper.ID_OP_POWER),
             createToken(TokenHelper.ID_NUM_1),
             createToken(TokenHelper.ID_NUM_2),
             createToken(TokenHelper.ID_NUM_3),
-            createToken(TokenHelper.ID_NUM_4),
-            createToken(TokenHelper.ID_OP_MULTIPLY),
-            createToken(TokenHelper.ID_OP_DIVIDE),
-
-            createToken(TokenHelper.ID_OP_FACTORIAL),
-            createToken(TokenHelper.ID_OP_POWER),
-            createToken(TokenHelper.ID_FUN_SQRT),
-            createToken(TokenHelper.ID_CONST_PI),
-            createToken(TokenHelper.ID_NUM_5),
-            createToken(TokenHelper.ID_NUM_6),
-            createToken(TokenHelper.ID_NUM_7),
-            createToken(TokenHelper.ID_NUM_8),
-            createToken(TokenHelper.ID_OP_MINUS),
             createToken(TokenHelper.ID_OP_PLUS),
 
-            createToken(TokenHelper.ID_FUN_LOG2),
             createToken(TokenHelper.ID_FUN_LN),
-            createToken(TokenHelper.ID_FUN_TAN),
-            createToken(TokenHelper.ID_OP_PERCENT),
+            createToken(TokenHelper.ID_FUN_COS),
+            createToken(TokenHelper.ID_FUN_EXP),
+            createToken(TokenHelper.ID_CONST_PI),
+            createToken(TokenHelper.ID_NUM_4),
+            createToken(TokenHelper.ID_NUM_5),
+            createToken(TokenHelper.ID_NUM_6),
+            createToken(TokenHelper.ID_OP_MINUS),
+
+            createToken(TokenHelper.ID_FUN_LOG2),
+            createToken(TokenHelper.ID_FUN_SIN),
+            createToken(TokenHelper.ID_FUN_SQRT),
+            createToken(TokenHelper.ID_CONST_E),
+            createToken(TokenHelper.ID_NUM_7),
+            createToken(TokenHelper.ID_NUM_8),
             createToken(TokenHelper.ID_NUM_9),
-            createToken(TokenHelper.ID_NUM_0, spanColumns = 2),
+            createToken(TokenHelper.ID_OP_MULTIPLY),
+
+            createToken(TokenHelper.ID_FUN_LOG10),
+            createToken(TokenHelper.ID_FUN_TAN),
+            createToken(TokenHelper.ID_FUN_SECOND_POWER),
             createToken(TokenHelper.ID_DOT),
-            createAction(id = ID_EQUALS, theme = themesManager.getActiveTheme().result, value = "=")
+            createToken(TokenHelper.ID_NUM_0, spanColumns = 2),
+            createAction(id = ID_EQUALS, theme = themesManager.getActiveTheme().result, value = "="),
+            createToken(TokenHelper.ID_OP_DIVIDE)
         )
     }
 

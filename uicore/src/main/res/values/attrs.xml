@@ -6,7 +6,7 @@
 
     <declare-styleable name="KeyboardLayout_Layout">
         <attr name="kl_spanColumns" format="integer" />
-        <attr name="kl_heightWeight" format="integer" />
+        <attr name="kl_aspectHeight" format="float" />
     </declare-styleable>
 
     <declare-styleable name="RoundButton">

@@ -19,6 +19,10 @@ class CalculatorActivity : BaseMvvmActivity<CalculatorViewModel>() {
 
     private val onSpecialButtonClicked = { id: String, isLongClick: Boolean ->
         when {
+            id == KeyboardManager.ID_EQUALS -> {
+                inputField.resetCursor()
+                viewModel.onResult(outputField.text.toString())
+            }
             id == KeyboardManager.ID_CLEAR && !isLongClick -> {
                 viewModel.onRemoveLastToken()
             }

@@ -11,7 +11,6 @@ import st235.com.github.calculator.R
 import st235.com.github.calculator.presentation.calculator.keyboard.KeyboardButton
 import st235.com.github.calculator.presentation.calculator.keyboard.KeyboardLayoutDelegate
 import st235.com.github.calculator.presentation.calculator.keyboard.OnButtonClickListener
-import st235.com.github.calculator.presentation.calculator.keyboard.token.TokenButton
 import st235.com.github.uicore.utils.RippleEffect
 import st235.com.github.uicore.utils.toPx
 import st235.com.github.uicore.widgets.KeyboardLayout
@@ -53,7 +52,7 @@ class WidgetButtonLayoutDelegate(
     override fun createLayoutParams(keyboardButton: KeyboardButton): KeyboardLayout.LayoutParams {
         val lp = KeyboardLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         lp.spanColumns = keyboardButton.spanColumns
-        lp.heightWeight = 2
+        lp.aspectHeight = 0.65F
         return lp
     }
 }

@@ -5,17 +5,16 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import st235.com.github.uicore.R
+import kotlin.math.abs
 import kotlin.math.max
-import kotlin.math.min
 
 class KeyboardLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
     private var heightFactor: Float = 1F
-    private val rowHeights = mutableMapOf<Int, Int>()
 
-    var columns = 1
+    var columnsCount = 1
     set(value) {
         if (value <= 0) {
             throw IllegalArgumentException()
@@ -30,124 +29,138 @@ class KeyboardLayout @JvmOverloads constructor(
             R.styleable.KeyboardLayout
         )
 
-        columns = typedArray.getInt(R.styleable.KeyboardLayout_kl_columns, 1)
+        columnsCount = typedArray.getInt(R.styleable.KeyboardLayout_kl_columns, 1)
 
         typedArray.recycle()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val proposedHeight = MeasureSpec.getSize(heightMeasureSpec)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
 
-        var height = 0
-        var width = 0
+        var index = 0
+        var childAspectHeight = 0F
 
-        var rowWidth = 0
-        var rowHeight = 0
+        while(index < childCount) {
 
-        var itemsCounter = 0
-        for (i in 0 until childCount) {
-            if (itemsCounter % columns == 0) {
-                rowHeights[(itemsCounter - 1) / columns] = rowHeight
-                height += rowHeight
-                width = max(width, rowWidth)
+            var levelIndex = 0
+            var levelAspectHeight = 0F
+            while (levelIndex < columnsCount && index < childCount) {
+                val child = getChildAt(index)
+                val layoutParams = (child.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
 
-                rowHeight = 0
-                rowWidth = 0
+                if (levelIndex + layoutParams.spanColumns > columnsCount) {
+                    break
+                }
+
+                levelAspectHeight = max(levelAspectHeight, layoutParams.aspectHeight)
+                levelIndex += layoutParams.spanColumns
+                index++
             }
 
-            val childView = getChildAt(i)
-
-            childView.measure(
-                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED)
-            )
-
-            val layoutParams = (childView.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
-
-            itemsCounter += layoutParams.spanColumns
-            rowWidth += (childView.measuredWidth + layoutParams.marginStart + layoutParams.marginEnd)
-            rowHeight = max(rowHeight, layoutParams.heightWeight)
+            childAspectHeight += levelAspectHeight
         }
 
-        if (!rowHeights.containsKey((itemsCounter) / columns)) {
-            rowHeights[(itemsCounter - 1) / columns] = rowHeight
-            height += rowHeight
-            width = max(width, rowWidth)
+        val itemWidth = parentWidth / columnsCount
+        val itemHeight = parentHeight / childAspectHeight
+
+        index = 0
+        while(index < childCount) {
+
+            var levelIndex = 0
+            while (levelIndex < columnsCount && index < childCount) {
+                val child = getChildAt(index)
+                val layoutParams = (child.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
+
+                if (levelIndex + layoutParams.spanColumns > columnsCount) {
+                    break
+                }
+
+                val w = itemWidth * layoutParams.spanColumns
+                val h = (layoutParams.aspectHeight * itemHeight).toInt()
+
+                child.measure(
+                    MeasureSpec.makeMeasureSpec(w, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY)
+                )
+
+                levelIndex += layoutParams.spanColumns
+                index++
+
+            }
         }
 
-        heightFactor = proposedHeight / height.toFloat()
-        val itemWidth = measuredWidth / columns.toFloat()
-
-        var i = 0
-        itemsCounter = 0
-        while (i < childCount) {
-            val childView = getChildAt(i)
-
-            val layoutParams = (childView.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
-
-            val childWidth = (itemWidth * layoutParams.spanColumns).toInt()
-            val childHeight = (rowHeights.getValue(itemsCounter / columns) * heightFactor).toInt()
-
-            childView.measure(
-                MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.EXACTLY)
-            )
-
-
-            itemsCounter += layoutParams.spanColumns
-            i++
-        }
-
-        setMeasuredDimension(
-            MeasureSpec.makeMeasureSpec(calculateDesiredSize(widthMeasureSpec, width), MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculateDesiredSize(heightMeasureSpec, height), MeasureSpec.EXACTLY)
-        )
+        setMeasuredDimension(parentWidth, parentHeight)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        val sizePerItem = measuredWidth / columns.toFloat()
+        val parentWidth = abs(l - r)
+        val parentHeight = abs(b - t)
 
-        var x = 0F
-        var y = 0F
+        var index = 0
+        var childAspectHeight = 0F
 
-        var i = 0
-        var itemsCounter = 0
-        while (i < childCount) {
-            if (i != 0 && itemsCounter % columns == 0) {
-                x = 0F
-                y += rowHeights.getValue((itemsCounter - 1) / columns) * heightFactor
+        while(index < childCount) {
+
+            var levelIndex = 0
+            var levelAspectHeight = 0F
+            while (levelIndex < columnsCount && index < childCount) {
+                val child = getChildAt(index)
+                val layoutParams = (child.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
+
+                if (levelIndex + layoutParams.spanColumns > columnsCount) {
+                    break
+                }
+
+                levelAspectHeight = max(levelAspectHeight, layoutParams.aspectHeight)
+                levelIndex += layoutParams.spanColumns
+                index++
             }
 
-            val childView = getChildAt(i)
-
-            val layoutParams = (childView.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
-
-            val childWidth = childView.measuredWidth + layoutParams.marginStart + layoutParams.marginEnd
-            val childHeight = rowHeights.getValue(itemsCounter / columns) * heightFactor
-
-            childView.layout(
-                (x).toInt(),
-                y.toInt(),
-                (x + sizePerItem * layoutParams.spanColumns).toInt(),
-                (y + childHeight).toInt()
-            )
-
-            x += sizePerItem * layoutParams.spanColumns
-            itemsCounter += layoutParams.spanColumns
-            i++
+            childAspectHeight += levelAspectHeight
         }
-    }
 
-    private fun calculateDesiredSize(sizeSpec: Int, contentSize: Int): Int {
-        val mode = MeasureSpec.getMode(sizeSpec)
-        val size = MeasureSpec.getSize(sizeSpec)
+        val itemWidth = parentWidth / columnsCount
+        val itemHeight = parentHeight / childAspectHeight
 
-        return when(mode) {
-            MeasureSpec.UNSPECIFIED -> contentSize
-            MeasureSpec.EXACTLY -> size
-            MeasureSpec.AT_MOST -> min(size, contentSize)
-            else -> throw IllegalArgumentException()
+        var x = 0
+        var y = 0
+
+        index = 0
+        while(index < childCount) {
+
+            var levelIndex = 0
+            var levelHeight = 0
+            while (levelIndex < columnsCount && index < childCount) {
+                val child = getChildAt(index)
+                val layoutParams = (child.layoutParams ?: generateDefaultLayoutParams()) as LayoutParams
+
+                if (levelIndex + layoutParams.spanColumns > columnsCount) {
+                    break
+                }
+
+                val w = itemWidth * layoutParams.spanColumns
+                val h = (layoutParams.aspectHeight * itemHeight).toInt()
+
+                child.layout(
+                    x,
+                    y,
+                    x + w,
+                    y + h
+                )
+
+                levelIndex += layoutParams.spanColumns
+                levelHeight = max(levelHeight, h)
+                index++
+
+                x += w
+            }
+
+            x = 0
+            y += levelHeight
         }
+
     }
 
     override fun generateLayoutParams(attrs: AttributeSet?): ViewGroup.LayoutParams? {
@@ -175,7 +188,7 @@ class KeyboardLayout @JvmOverloads constructor(
     class LayoutParams: MarginLayoutParams {
 
         var spanColumns: Int
-        var heightWeight: Int
+        var aspectHeight: Float
 
         constructor(context: Context, attrs: AttributeSet?): super(context, attrs) {
             val typedArray = context.obtainStyledAttributes(attrs,
@@ -183,7 +196,7 @@ class KeyboardLayout @JvmOverloads constructor(
             )
 
             spanColumns = typedArray.getInt(R.styleable.KeyboardLayout_Layout_kl_spanColumns, 1)
-            heightWeight = typedArray.getInt(R.styleable.KeyboardLayout_Layout_kl_heightWeight, 1)
+            aspectHeight = typedArray.getFloat(R.styleable.KeyboardLayout_Layout_kl_aspectHeight, 1F)
 
             typedArray.recycle()
         }
@@ -191,16 +204,16 @@ class KeyboardLayout @JvmOverloads constructor(
         constructor(params: ViewGroup.LayoutParams): super(params) {
             if (params is LayoutParams) {
                 spanColumns = params.spanColumns
-                heightWeight = params.heightWeight
+                aspectHeight = params.aspectHeight
             } else {
                 spanColumns = 1
-                heightWeight = 1
+                aspectHeight = 1F
             }
         }
 
         constructor(width: Int, height: Int): super(width, height) {
             spanColumns = 1
-            heightWeight = 1
+            aspectHeight = 1F
         }
     }
 }

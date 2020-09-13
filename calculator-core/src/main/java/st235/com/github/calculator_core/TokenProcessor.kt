@@ -89,6 +89,36 @@ class TokenProcessor(
         tokensList.clear()
     }
 
+    fun replaceWithOutput(rawOutput: String) {
+        val newTokens = mutableListOf<Token>()
+
+        for (i in rawOutput.indices) {
+            val c = rawOutput[i]
+
+            val token = when (c) {
+                '-' -> findTokenById(TokenHelper.ID_OP_MINUS)
+                '+' -> findTokenById(TokenHelper.ID_OP_PLUS)
+                '0' -> findTokenById(TokenHelper.ID_NUM_0)
+                '1' -> findTokenById(TokenHelper.ID_NUM_1)
+                '2' -> findTokenById(TokenHelper.ID_NUM_2)
+                '3' -> findTokenById(TokenHelper.ID_NUM_3)
+                '4' -> findTokenById(TokenHelper.ID_NUM_4)
+                '5' -> findTokenById(TokenHelper.ID_NUM_5)
+                '6' -> findTokenById(TokenHelper.ID_NUM_6)
+                '7' -> findTokenById(TokenHelper.ID_NUM_7)
+                '8' -> findTokenById(TokenHelper.ID_NUM_8)
+                '9' -> findTokenById(TokenHelper.ID_NUM_9)
+                '.' -> findTokenById(TokenHelper.ID_DOT)
+                else -> throw IllegalArgumentException()
+            }
+
+            newTokens.add(token)
+        }
+
+        tokensList.clear()
+        tokensList.addAll(newTokens)
+    }
+
     fun evaluate(): ProcessingResult {
         val inputTokens = ArrayList(tokensList)
         val rawInput = createXCalcInput()
