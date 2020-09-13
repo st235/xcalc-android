@@ -39,7 +39,9 @@ internal class TokenLoader(
                 rawToken.id,
                 rawToken.value,
                 rawToken.formattedValue,
-                rawToken.inputValue
+                rawToken.inputValue,
+                rawToken.length,
+                rawToken.isSolid
             )
             output[token.id] = token
         }

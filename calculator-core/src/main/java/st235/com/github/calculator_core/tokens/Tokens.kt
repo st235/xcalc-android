@@ -6,7 +6,9 @@ class Token(
     internal val id: String,
     internal val rawValue: String,
     private val formattedString: String?,
-    private val inputString: String?
+    private val inputString: String?,
+    val length: Int,
+    val isSolid: Boolean
 ) {
 
     val shortValue: String by lazy {

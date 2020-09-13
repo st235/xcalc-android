@@ -1,5 +1,6 @@
 package st235.com.github.calculator.presentation.calculator.keyboard.action
 
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,9 @@ class ActionButtonLayoutDelegate(
         buttonView.isClickable = true
         buttonView.isFocusable = true
         buttonView.isLongClickable = true
+        buttonView.isHapticFeedbackEnabled = true
         buttonView.setOnClickListener {
+            buttonView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             onClickListener(keyboardButton.id, false)
         }
 

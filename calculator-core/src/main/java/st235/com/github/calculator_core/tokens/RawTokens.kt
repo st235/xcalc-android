@@ -12,5 +12,9 @@ internal data class RawToken(
     @SerializedName("formattedValue")
     val formattedValue: String?,
     @SerializedName("inputValue")
-    val inputValue: String?
+    val inputValue: String?,
+    @SerializedName("solid")
+    val isSolid: Boolean,
+    @SerializedName("length")
+    val length: Int
 )

@@ -69,7 +69,7 @@ class TokenProcessor(
 
     fun removeInterval(start: Int, finish: Int) {
         if (tokensList.isEmpty()
-            || start > finish) {
+            || start >= finish) {
             return
         }
 

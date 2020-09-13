@@ -45,7 +45,7 @@ class InputProcessor @Inject constructor(
             }
         }
 
-        builder.append(spannableFrom(autocompleteTheme, result.balanceSuffix))
+        builder.append(spannableFrom(autocompleteTheme, result.balanceSuffix, true))
 
         return builder
     }
@@ -55,12 +55,18 @@ class InputProcessor @Inject constructor(
     }
 
     private fun spannableFrom(themeNode: ThemeNode, token: Token): Spannable {
-        return spannableFrom(themeNode, HtmlCompat.fromHtml(token.fullValue, HtmlCompat.FROM_HTML_MODE_COMPACT))
+        return spannableFrom(themeNode, HtmlCompat.fromHtml(token.fullValue, HtmlCompat.FROM_HTML_MODE_COMPACT), token.isSolid)
     }
 
-    private fun spannableFrom(themeNode: ThemeNode, token: CharSequence): Spannable {
+    private fun spannableFrom(themeNode: ThemeNode, token: CharSequence, isSolid: Boolean = false): Spannable {
         val string = SpannableString(token)
-        string.setSpan(TokenSpan(themeNode.foregroundColor), 0, string.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        if (isSolid) {
+            string.setSpan(TokenSpan(themeNode.foregroundColor), 0, string.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        } else {
+            string.setSpan(ForegroundColorSpan(themeNode.foregroundColor), 0, string.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
         return string
     }
 

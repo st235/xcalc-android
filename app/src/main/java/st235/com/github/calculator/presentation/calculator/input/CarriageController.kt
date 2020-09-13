@@ -24,7 +24,7 @@ class CarriageController @Inject constructor() {
         var currentLength = 0
         for (i in tokens.indices) {
             val token = tokens[i]
-            val tokenLength = token.fullValue.length
+            val tokenLength = token.length
             inputStartMapping[currentLength] = i
             currentLength += tokenLength
             inputFinishMapping[currentLength] = i
@@ -49,9 +49,8 @@ class CarriageController @Inject constructor() {
         val indexOfTokenAhead = inputStartMapping.ceilingEntry(carriageIndex.index())?.value
 
         if (indexOfTokenAhead == null) {
-            // exceptional situation
-            // need assertion here
-            throw IllegalStateException("index if a token ahead was null")
+            //parked text editing
+            return inputStartMapping.lastEntry()?.value ?: throw IllegalStateException("Cannot be null")
         }
 
         return indexOfTokenAhead
@@ -63,10 +62,13 @@ class CarriageController @Inject constructor() {
         val indexOfTokenBelow = inputStartMapping.floorEntry(carriageIndex.start)?.value
         val indexOfTokenAhead = inputStartMapping.ceilingEntry(carriageIndex.finish)?.value
 
-        if (indexOfTokenBelow == null || indexOfTokenAhead == null) {
-            // exceptional situation
-            // need assertion here
-            throw IllegalStateException("index if a token ahead was null")
+        if (indexOfTokenBelow == null) {
+            // parked text editing
+            throw IllegalStateException()
+        }
+
+        if (indexOfTokenAhead == null) {
+            return Pair(indexOfTokenBelow, inputStartMapping.lastEntry()?.value ?: throw IllegalStateException("Cannot be null"))
         }
 
         return Pair(indexOfTokenBelow, indexOfTokenAhead)

@@ -7,25 +7,17 @@
     android:background="#fff"
     tools:context=".presentation.calculator.CalculatorActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+    <st235.com.github.uicore.widgets.RoundButton
+        android:id="@+id/angleUnitsSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        app:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:layout_margin="4dp"
+        app:rb_backgroundRoundRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <st235.com.github.uicore.widgets.RoundButton
-            android:id="@+id/angleUnitsSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/montserrat_medium"
-            app:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:layout_margin="4dp"
-            app:rb_backgroundRoundRadius="8dp" />
-
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <st235.com.github.uicore.widgets.TokensEditText
         android:id="@+id/inputField"
@@ -42,7 +34,7 @@
         android:fontFamily="@font/montserrat_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="2*2+3" />
 
     <TextView

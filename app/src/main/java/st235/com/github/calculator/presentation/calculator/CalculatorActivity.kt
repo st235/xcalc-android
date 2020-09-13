@@ -23,6 +23,7 @@ class CalculatorActivity : BaseMvvmActivity<CalculatorViewModel>() {
                 viewModel.onRemoveLastToken()
             }
             id == KeyboardManager.ID_CLEAR && isLongClick -> {
+                inputField.resetCursor()
                 viewModel.onClear()
             }
         }
